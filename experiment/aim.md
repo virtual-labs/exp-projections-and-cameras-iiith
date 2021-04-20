@@ -1,1 +1,1 @@
-### Aim of the experiment
+This experiment explains perspective and orthogonal projections using Cameras.
