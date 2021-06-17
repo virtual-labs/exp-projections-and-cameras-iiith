@@ -6,12 +6,9 @@ An othographic camera, with left and right being vertical clipping planes, top a
 
 <img src="images/ortho.png">
 
-Orthographics Projection Matrix
-
 When a human eye looks at a scene, object in the distance appear smaller than objects close by - this is known as **Perspective projection**. Unlike orthographic projection, perspective projection shows distant objects as smaller to provide additional realism.
 
 The perspective projection requires greater definition. The camera's position, orientation and field of view. Assuming the eye is located at (0,0,0) and (left, bottom, -near) & (right, top, -near) specify the lower-left & upper-right points on the near clipping plane and -f specifying the location of far clipping plane, the perspective projection matrix is
 
 <img src="images/perspective.png">
 
-Perspective Projection Matrix
