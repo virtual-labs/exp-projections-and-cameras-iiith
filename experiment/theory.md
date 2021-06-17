@@ -4,7 +4,7 @@
 
 An othographic camera, with left and right being vertical clipping planes, top and bottom being horizontal clipping planes, near and far being depth clipping planes, multiplies the current matrix M with the following matrix and replace the current matrix with the result.
 
-<img src="images/ortho.png"">
+<img src="images/ortho.png">
 
 Orthographics Projection Matrix
 
