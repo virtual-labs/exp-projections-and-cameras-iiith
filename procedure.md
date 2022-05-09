@@ -1,0 +1,5 @@
+1. This experiment is designed to teach the orthographic and perspective projections using cameras and a bunny. Here we demonstrate different projections and setting up OpenGL cameras.  
+2. A Camera node is similar to other Geometry nodes but always stays higher up in the hierarchy. Transformations can be applied to the camera by editing the transformation node just like for any other node. The camera is always placed at the origin of its Coordinate system looking towards -ve Z-axis. The camera view window show the scene as seen by the camera.  
+3. A series of transformations have been applied to the Bunny model and also to the camera. Drag the slider to view the motion of camera and the bunny in global reference frame and how the effective motion of the bunny in the camera view.  
+4. Try modfying the camera parameters to see the effect on the view. Also modify the camera alignment by modifying the coordinate system and adding transformations.  
+5. Add a new orthographic camera and notice the differences between orhographic and projective views.  
