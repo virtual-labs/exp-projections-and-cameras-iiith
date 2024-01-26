@@ -1,2 +1,1 @@
-This experiment explains perspective and orthogonal projections using Cameras.  
-
+The aim of this experiment is to elucidate the concepts of perspective and orthogonal projections by delving into the intricacies of Cameras. Participants will gain a comprehensive understanding of how cameras play a pivotal role in shaping perspectives and capturing scenes through both perspective and orthogonal projection techniques.
