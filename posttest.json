@@ -1,0 +1,65 @@
+{
+    "version": 1.0,
+    "questions": [
+        {
+            "question": "1. Which matrix is commonly used for implementing perspective projection in computer graphics?",
+            "answers": {
+                "a": "Orthographic matrix",
+                "b": "Translation matrix",
+                "c": "Perspective matrix",
+                "d": "Scaling matrix"
+            },
+            "correctAnswer": "c",
+            "explanation": "The perspective matrix is commonly used to implement perspective projection in computer graphics, transforming 3D coordinates into 2D space.",
+            "difficulty": "beginner"
+        },
+        {
+            "question": "2. What role does the 'near' and 'far' planes play in the context of camera frustum?",
+            "answers": {
+                "a": "They define the material properties of objects in the scene.",
+                "b": "They control the visibility of objects based on their distance from the camera.",
+                "c": "They determine the focal length of the camera lens.",
+                "d": "They influence the lighting conditions in the rendered image."
+            },
+            "correctAnswer": "b",
+            "explanation": "The 'near' and 'far' planes in the camera frustum control the visibility of objects based on their distance from the camera, ensuring accurate rendering of scenes.",
+            "difficulty": "intermediate"
+        },
+        {
+            "question": "3. What is the purpose of the view matrix in computer graphics?",
+            "answers": {
+                "a": "To define the position and orientation of the virtual camera.",
+                "b": "To transform object coordinates from model space to world space.",
+                "c": "To apply shading algorithms to the rendered image.",
+                "d": "To store pixel values of an image."
+            },
+            "correctAnswer": "a",
+            "explanation": "The view matrix is used to define the position and orientation of the virtual camera, allowing for proper visualization of the 3D scene.",
+            "difficulty": "intermediate"
+        },
+        {
+            "question": "4. How does a depth buffer contribute to the realism of rendered scenes?",
+            "answers": {
+                "a": "It controls the saturation levels of colors in the rendered image.",
+                "b": "It manages the transparency of objects in the scene.",
+                "c": "It simulates the effects of atmospheric perspective by assigning depth values to pixels.",
+                "d": "It determines the overall brightness of the rendered image."
+            },
+            "correctAnswer": "c",
+            "explanation": "A depth buffer assigns depth values to pixels, simulating atmospheric perspective in rendered scenes, enhancing realism by portraying objects farther away with reduced visibility.",
+            "difficulty": "advanced"
+        },
+        {
+            "question": "5. In computer graphics, what is the purpose of the 'aspect ratio' in relation to cameras?",
+            "answers": {
+                "a": "It determines the intensity of specular reflection on surfaces.",
+                "b": "It defines the proportion of width to height in the rendered image.",
+                "c": "It controls the field of view of the camera.",
+                "d": "It adjusts the level of ambient lighting in the scene."
+            },
+            "correctAnswer": "b",
+            "explanation": "The 'aspect ratio' in computer graphics defines the proportion of width to height in the rendered image, ensuring proper scaling and visual representation.",
+            "difficulty": "advanced"
+        }
+    ]
+}
