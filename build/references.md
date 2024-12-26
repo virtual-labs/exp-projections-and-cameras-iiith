@@ -1,3 +1,0 @@
-- [http://en.wikipedia.org/wiki/3D_projection](http://en.wikipedia.org/wiki/3D_projection)
--[https://www.researchgate.net/figure/Projection-modes-aorthographic-projection-and-bperspective-projection_fig2_265693452](https://www.researchgate.net/figure/Projection-modes-aorthographic-projection-and-bperspective-projection_fig2_265693452)
--[https://www.academia.edu/103532333/Practical_Shader_Development?uc-sb-sw=2476260](https://www.academia.edu/103532333/Practical_Shader_Development?uc-sb-sw=2476260)
