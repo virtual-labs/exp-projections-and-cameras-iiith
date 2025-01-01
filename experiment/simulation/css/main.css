@@ -104,11 +104,13 @@
 
 @media (min-width: 1024px) {
   #left.apparatus {
+    width: 20vw;
     height: 100vh; /* Adjusting height using viewport height */
     overflow-y: auto; /* Scrollbar for overflow content */
     /* Any additional styles can be added here */
   }
   #observations.right {
+    width: 20vw;
     height: 100vh; /* Adjusting height using viewport height */
   }
 }
@@ -468,16 +470,16 @@
 
 #gui-container {
   position: relative;
-  width: 100%;
-  padding-top: 25px;
+  width: 95%;
+  padding-top: 30px;
   padding-left: 15px;
   height: auto;
   display: flex;
   justify-content: center; /* Horizontal centering */
   align-items: center; /* Vertical centering */
   overflow: hidden;
-  /* background-color: lightblue; */
   transform: scale(1.15);
+  border-radius: 20px;
   
 }
 

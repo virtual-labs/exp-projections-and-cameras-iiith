@@ -554,7 +554,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Default camera parameters
   const cameraParams = {
-    camType: "Perspective", // Either 'Perspective' or 'Orthographic'
+    camType: "Orthographic", // Either 'Perspective' or 'Orthographic'
     nearCoord: 0.1,
     farCoord: 1000,
     camX: 5,
@@ -575,6 +575,7 @@ document.addEventListener("DOMContentLoaded", () => {
     topCoord: 15,
     bottomCoord: -15,
   };
+  createCamera(); // Immediately update the camera
 
   // Remove GUI elements for a clean update
   function clearGui(gui) {
