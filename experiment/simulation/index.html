@@ -119,9 +119,17 @@
                 <li class="instr-font">
                     <strong style="font-size: 19px;">🔧Parameter Changes</strong>:
                     <ul style="list-style-type: disc; padding-left: 20px;">
-                        <li>By adjusting the parameters above, you can observe how the camera behaves within the simulation</li>
+                        <li>By adjusting the parameters above, you can observe how the camera behaves within the
+                            simulation</li>
                     </ul>
                 </li>
+
+                <li class="instr-font">
+                    <strong style="font-size: 19px;color: #016b2d;">↺ Reset All</strong>: Click the "Reset All" button
+                    to revert all controls
+                    and settings to their default values.
+                </li>
+
 
 
                 <div style="background-color: #f0f0f0; padding: 5px; margin: 10px 0;">
@@ -297,11 +305,18 @@
         </div>
 
 
-    <div id="observations" class="column has-text-centered is-2-desktop is-5-tablet is-5-mobile right">
-        <div class="v-datalist-container">
+        <div id="observations" class="column has-text-centered is-2-desktop is-5-tablet is-5-mobile right">
+            <div class="v-datalist-container">
+                <div class="v-datalist-title" style="padding-top: 20px;">Camera Controls</div>
                 <div id="gui-container"></div>
 
+                <div style="padding-top: 30px;">
+                    <button class="v-button reset-btn is-responsive" onclick="location.reload()">
+                        Reset All
+                    </button>
+                </div>
             </div>
+
         </div>
         <!-- <div id="observations" class="column has-text-centered is-2-desktop is-5-tablet is-5-mobile right">
         </div> -->
