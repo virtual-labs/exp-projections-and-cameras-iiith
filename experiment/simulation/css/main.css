@@ -1,7 +1,214 @@
 .page {
     overflow: hidden;
-} 
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
+.workspace {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0;
+    height: calc(100vh - 100px);
+}
+
+/* Left sidebar styles */
+#left.apparatus {
+    flex: 0 0 300px;
+    height: 100%;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+}
+
+/* Main content area */
+.column.is-10-desktop {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* View containers layout */
+.columns.is-multiline {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.column.is-6 {
+    flex: 1 1 45%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.view-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.v-canvas-container {
+    flex: 1;
+    min-height: 300px;
+    background: #fff;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Right sidebar styles */
+#observations.right {
+    flex: 0 0 300px;
+    height: 100%;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+}
+
+/* Mobile responsive styles */
+@media screen and (max-width: 1023px) {
+    .workspace {
+        height: auto;
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    #left.apparatus,
+    #observations.right {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+
+    .column.is-10-desktop {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .columns.is-multiline {
+        margin: 0 !important;
+        width: 100% !important;
+    }
+
+    .column.is-6 {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 1rem;
+        padding: 0 !important;
+    }
+
+    .view-container {
+        min-height: 400px;
+        margin-bottom: 1rem;
+        width: 100% !important;
+        padding: 0.5rem;
+    }
+
+    .v-canvas-container {
+        min-height: 350px;
+        height: 400px;
+        width: 100% !important;
+    }
+}
+
+/* Additional mobile optimizations for very small screens */
+@media screen and (max-width: 480px) {
+    .v-canvas-container {
+        height: 300px;
+    }
+
+    .view-container {
+        min-height: 320px;
+        padding: 0.25rem;
+    }
+
+    .column.is-10-desktop {
+        padding: 0 !important;
+    }
+}
+
+/* Shape list container adjustments */
+.shape-list-container {
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+/* GUI container adjustments */
+#gui-container {
+    position: relative;
+    width: 95%;
+    padding-top: 30px;
+    padding-left: 15px;
+    height: auto;
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    overflow: hidden;
+    transform: scale(1.15);
+    border-radius: 20px;
+}
+
+/* Style for dat.GUI container */
+.dg.main {
+    width: 85% !important; /* Reduced from 100% to 85% */
+    margin: 0 auto !important;
+}
+
+/* Style for dat.GUI title bar */
+.dg.main .close-button {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 5px 0 !important;
+}
+
+/* Style for dat.GUI folder */
+.dg.main .folder {
+    width: 100% !important;
+    margin: 0 auto !important;
+}
+
+/* Style for dat.GUI controls */
+.dg.main .folder .dg {
+    width: 100% !important;
+    margin: 0 auto !important;
+}
+
+/* Style for individual controls */
+.dg.main .folder .dg .c {
+    width: 100% !important;
+    padding: 0 5px !important;
+}
+
+/* Style for control labels */
+.dg.main .folder .dg .c .slider {
+    width: 100% !important;
+}
+
+.dg.main .folder .dg .c input[type=text] {
+    width: 100% !important;
+}
+
+/* Add margin to the right side of the container */
+#observations.right .v-datalist-container {
+    padding-right: 15px; /* Match the left padding */
+}
 
 .smol-font {
    font-size: x-medium; 
@@ -12,18 +219,9 @@
     padding: 0;
 }
 
-
-
 .v-instruction-container {
     width: 90%;
     margin: 0 auto;
-}
-
-.v-canvas-container {
-    width: 100%;
-    height: 100%;
-    /* min-height: 150px; */
-    border: none;
 }
 
 .v-slider-full {
@@ -52,7 +250,6 @@
     order: 3;
 }
 
-
 /* .exp {
     position: relative;
 } */
@@ -73,7 +270,6 @@
     flex-direction: row;
     padding-left: 25px;
 }
-
 
 @media screen and (max-width: 800px) {
      .v-canvas-container {
@@ -114,7 +310,6 @@
     height: 100vh; /* Adjusting height using viewport height */
   }
 }
-
 
 .main-content {
     display: flex;
@@ -188,12 +383,10 @@
     margin: auto;
 }
 
-
 .v-datalist-title {
     border-bottom: 0;
     /* margin-top: 1px; */
 }
-
 
 .v-datalist-title-shapes {
     /* font-family: 'Arial', sans-serif; */
@@ -203,13 +396,11 @@
     margin-top: -10px; /* Space below */
 }
 
-
 .v-collapsible-instruction-container {
     width: 65%;
     margin: auto;
     border-radius: 0.5rem;
 }
-
 
 .v-collapsible {
     width: 98%;
@@ -290,7 +481,6 @@
     padding-top: 10px;
 	margin: 2px;
 }
-
 
 /* Style for the entire shape list *//* Container for the shape list */
 .shape-list-container {
@@ -415,7 +605,6 @@
   background-color: #c0392b;
 }
 
-
 /* Style for shape name */
 .shape-list-container li .shape-name {
   font-size: 30px;
@@ -467,20 +656,19 @@
     transform: translate(-50%, -50%) scale(1.05); /* Slight zoom effect */
 }
 
+.view-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+    text-align: center;
+}
 
-#gui-container {
-  position: relative;
-  width: 95%;
-  padding-top: 30px;
-  padding-left: 15px;
-  height: auto;
-  display: flex;
-  justify-content: center; /* Horizontal centering */
-  align-items: center; /* Vertical centering */
-  overflow: hidden;
-  transform: scale(1.15);
-  border-radius: 20px;
-  
+#canvas-main, #canvas-frustum {
+    width: 100%;
+    height: 400px;
+    background: #fff;
+    border-radius: 4px;
 }
 
 
