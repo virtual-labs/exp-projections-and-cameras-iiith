@@ -72,10 +72,14 @@ let container = document.getElementById("canvas-main");
 
 let spanEditModal = document.getElementsByClassName("close")[0];
 let scene,
+  frustumScene,
   PI = 3.141592653589793,
   camera,
+  frustumCamera,
   renderer,
+  frustumRenderer,
   orbit,
+  frustumOrbit,
   shapes = [],
   xygrid = [],
   yzgrid = [],
@@ -534,27 +538,12 @@ function handleShapeAddition() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("cam-modal");
-  const closeButton = document.querySelector(".close");
-  const submitButton = document.getElementById("new-cam"); // The button with id="new-cam"
-
-  function closeModal() {
-    modal.style.display = "none";
-  }
-
-  closeButton.addEventListener("click", closeModal);
-
-  window.addEventListener("click", (event) => {
-    if (event.target === modal) {
-      closeModal();
-    }
-  });
-
+  // Initialize GUI
   const gui = new dat.GUI();
 
   // Default camera parameters
   const cameraParams = {
-    camType: "Orthographic", // Either 'Perspective' or 'Orthographic'
+    camType: "Orthographic",
     nearCoord: 0.1,
     farCoord: 1000,
     camX: 5,
@@ -566,16 +555,13 @@ document.addEventListener("DOMContentLoaded", () => {
     upX: 0,
     upY: 1,
     upZ: 0,
-    // Perspective-specific
     fieldOfView: 75,
     aspectRatio: window.innerWidth / window.innerHeight,
-    // Orthographic-specific
     leftCoord: -15,
     rightCoord: 15,
     topCoord: 15,
     bottomCoord: -15,
   };
-  createCamera(); // Immediately update the camera
 
   // Remove GUI elements for a clean update
   function clearGui(gui) {
@@ -593,8 +579,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .add(cameraParams, "camType", ["Orthographic", "Perspective"])
       .name("Camera Type")
       .onChange(() => {
-        updateGui(); // Recreate the GUI for the selected camera type
-        createCamera(); // Immediately update the camera
+        updateGui();
+        createCamera();
       });
 
     gui
@@ -664,35 +650,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to create the camera based on GUI values
   function createCamera() {
-    // let camera;
     if (cameraParams.camType === "Orthographic") {
-      // Orthographic Camera
       camera = new THREE.OrthographicCamera(
-        cameraParams.leftCoord, // left
-        cameraParams.rightCoord, // right
-        cameraParams.topCoord, // top
-        cameraParams.bottomCoord, // bottom
-        cameraParams.nearCoord, // near
-        cameraParams.farCoord // far
+        cameraParams.leftCoord,
+        cameraParams.rightCoord,
+        cameraParams.topCoord,
+        cameraParams.bottomCoord,
+        cameraParams.nearCoord,
+        cameraParams.farCoord
       );
     } else {
-      // Perspective Camera
       camera = new THREE.PerspectiveCamera(
-        cameraParams.fieldOfView, // Field of view
-        cameraParams.aspectRatio, // Aspect ratio
-        cameraParams.nearCoord, // near
-        cameraParams.farCoord // far
+        cameraParams.fieldOfView,
+        cameraParams.aspectRatio,
+        cameraParams.nearCoord,
+        cameraParams.farCoord
       );
     }
 
-    // Set camera position
     camera.position.set(
       cameraParams.camX,
       cameraParams.camY,
       cameraParams.camZ
     );
 
-    // Set camera target
     camera.lookAt(
       new THREE.Vector3(
         cameraParams.targetX,
@@ -701,21 +682,18 @@ document.addEventListener("DOMContentLoaded", () => {
       )
     );
 
-    // Set the up vector
-    // camera.up.set(cameraParams.upX, cameraParams.upY, cameraParams.upZ);
-
     console.log("Created Camera:", camera);
   }
 
   // Get the #gui-container and append the GUI controls
   const guiContainer = document.getElementById("gui-container");
-  guiContainer.appendChild(gui.domElement);
+  if (guiContainer) {
+    guiContainer.appendChild(gui.domElement);
+  }
 
   // Initialize the GUI with default parameters
   updateGui();
-
-  // Optionally close the modal after submission
-  submitButton.addEventListener("click", closeModal);
+  createCamera();
 });
 
 const toggleInstructions = document.getElementById("toggle-instructions");
@@ -796,126 +774,194 @@ function createLabel(text, direction, length) {
   return labelMesh;
 }
 
-scene = new THREE.Scene();
-scene.background = new THREE.Color(0x333333);
-camera = new THREE.PerspectiveCamera(
-  30,
-  window.innerWidth / window.innerHeight,
-  1,
-  1000
-);
 let init = function () {
-  camera.position.set(30, 15, 30); // Set camera position behind and above the origin
-
-  camera.lookAt(10, -20, 15);
-  const light = new THREE.DirectionalLight(0xffffff, 3);
-  light.position.set(1, 1, 1).normalize();
-  scene.add(light);
-  const gridHelper = new THREE.GridHelper(size, divisions);
-  const count = 1;
-
-  const arrowHelper = [];
-  const dir = [
-    new THREE.Vector3(1, 0, 0), // +X
-    new THREE.Vector3(0, 1, 0), // +Y
-    new THREE.Vector3(0, 0, 1), // +Z
-    new THREE.Vector3(-1, 0, 0), // -X
-    new THREE.Vector3(0, -1, 0), // -Y
-    new THREE.Vector3(0, 0, -1), // -Z
-  ];
-
-  const labels = ["+X", "+Y", "+Z", "-X", "-Y", "-Z"]; // Labels for each axis
-  const origin = new THREE.Vector3(0, 0, 0);
-  const length = 10;
-
-  // Loop through the axes
-  for (let i = 0; i < 6; i++) {
-    // Determine color based on the direction
-    let color;
-    if (i === 0 || i === 3) {
-      color = "red"; // +X and -X axes
-    } else if (i === 1 || i === 4) {
-      color = "yellow"; // +Y and -Y axes
-    } else {
-      color = "blue"; // +Z and -Z axes
+    // Wait for DOM to be fully loaded
+    if (!document.getElementById('canvas-main') || !document.getElementById('canvas-frustum')) {
+        console.error('Canvas containers not found');
+        return;
     }
 
-    // Create the arrow helper for the current direction and color
-    arrowHelper[i] = new THREE.ArrowHelper(dir[i], origin, length, color);
-    scene.add(arrowHelper[i]);
+    // Initialize main scene and camera first
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x333333);
+    
+    // Initialize main camera
+    camera = new THREE.PerspectiveCamera(
+        30,
+        window.innerWidth / window.innerHeight,
+        1,
+        1000
+    );
+    camera.position.set(30, 15, 30);
+    camera.lookAt(10, -20, 15);
 
-    // Create label for each axis and position it at the tip of the arrow
-    const label = createLabel(labels[i], dir[i], length);
-    scene.add(label);
-  }
+    // Initialize main renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    const mainContainer = document.getElementById("canvas-main");
+    if (mainContainer) {
+        let w = mainContainer.offsetWidth;
+        let h = mainContainer.offsetHeight;
+        renderer.setSize(w, h);
+        mainContainer.appendChild(renderer.domElement);
+    }
 
-  createCube(
-    7,
-    0,
-    0,
-    shapes,
-    shapeList,
-    shapeCount,
-    scene,
-    point,
-    shapeVertex,
-    dragX,
-    dragY,
-    dragz
-  );
+    // Initialize orbit controls
+    orbit = new OrbitControls(camera, renderer.domElement);
+    orbit.mouseButtons = {
+        LEFT: MOUSE.PAN,
+        MIDDLE: MOUSE.DOLLY,
+        RIGHT: MOUSE.ROTATE,
+    };
+    orbit.target.set(0, 0, 0);
+    orbit.enableDamping = true;
 
-  createCube(
-    0,
-    -5,
-    0,
-    shapes,
-    shapeList,
-    shapeCount,
-    scene,
-    point,
-    shapeVertex,
-    dragX,
-    dragY,
-    dragz
-  );
+    // Add lighting
+    const light = new THREE.DirectionalLight(0xffffff, 3);
+    light.position.set(1, 1, 1).normalize();
+    scene.add(light);
 
-  createCube(
-    0,
-    0,
-    7,
-    shapes,
-    shapeList,
-    shapeCount,
-    scene,
-    point,
-    shapeVertex,
-    dragX,
-    dragY,
-    dragz
-  );
+    // Add grid helper
+    const gridHelper = new THREE.GridHelper(size, divisions);
+    scene.add(gridHelper);
 
-  updateShapeList(shapeList); // Update the UI
+    // Add axis helpers
+    const dir = [
+        new THREE.Vector3(1, 0, 0),
+        new THREE.Vector3(0, 1, 0),
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(-1, 0, 0),
+        new THREE.Vector3(0, -1, 0),
+        new THREE.Vector3(0, 0, -1),
+    ];
 
-  // let tri_geo = Triangle(vertexA, vertexB, vertexC, scene, dotList);
-  renderer = new THREE.WebGLRenderer();
-  let w = container.offsetWidth;
-  let h = container.offsetHeight;
-  renderer.setSize(w, 0.85 * h);
-  container.appendChild(renderer.domElement);
-  orbit = new OrbitControls(camera, renderer.domElement);
-  orbit.mouseButtons = {
-    LEFT: MOUSE.PAN,
-    MIDDLE: MOUSE.DOLLY,
-    RIGHT: MOUSE.ROTATE,
-  };
-  orbit.target.set(0, 0, 0);
-  orbit.enableDamping = true;
+    const labels = ["+X", "+Y", "+Z", "-X", "-Y", "-Z"];
+    const origin = new THREE.Vector3(0, 0, 0);
+    const length = 10;
+
+    for (let i = 0; i < 6; i++) {
+        let color = i < 3 ? ["red", "yellow", "blue"][i] : ["red", "yellow", "blue"][i - 3];
+        const arrowHelper = new THREE.ArrowHelper(dir[i], origin, length, color);
+        scene.add(arrowHelper);
+        const label = createLabel(labels[i], dir[i], length);
+        if (label) scene.add(label);
+    }
+
+    // Create initial shapes
+    createCube(7, 0, 0, shapes, shapeList, shapeCount, scene, point, shapeVertex, dragX, dragY, dragz);
+    createCube(0, -5, 0, shapes, shapeList, shapeCount, scene, point, shapeVertex, dragX, dragY, dragz);
+    createCube(0, 0, 7, shapes, shapeList, shapeCount, scene, point, shapeVertex, dragX, dragY, dragz);
+    updateShapeList(shapeList);
+
+    // Initialize frustum visualization after main scene is set up
+    const { frustum, cameraHelper } = createFrustumVisualization();
+
+    // Main animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Update main scene
+        orbit.update();
+        renderer.render(scene, camera);
+
+        // Update frustum visualization if it exists
+        if (frustum && cameraHelper) {
+            updateFrustumVisualization(frustum, cameraHelper);
+            frustumOrbit.update();
+            frustumRenderer.render(frustumScene, frustumCamera);
+        }
+    }
+
+    animate();
 };
-let mainLoop = function () {
-  orbit.update(); // Important for damping
-  camera.updateMatrixWorld();
-  renderer.render(scene, camera);
-  requestAnimationFrame(mainLoop);
-};
-init();
-mainLoop();
+
+function createFrustumVisualization() {
+    // Create frustum scene
+    frustumScene = new THREE.Scene();
+    frustumScene.background = new THREE.Color(0xf0f0f0);
+
+    // Create frustum camera
+    frustumCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    frustumCamera.position.set(20, 20, 20);
+    frustumCamera.lookAt(0, 0, 0);
+
+    // Create frustum renderer
+    const frustumContainer = document.getElementById('canvas-frustum');
+    frustumRenderer = new THREE.WebGLRenderer({ antialias: true });
+    frustumRenderer.setSize(frustumContainer.clientWidth, frustumContainer.clientHeight);
+    frustumContainer.appendChild(frustumRenderer.domElement);
+
+    // Create frustum controls
+    frustumOrbit = new OrbitControls(frustumCamera, frustumRenderer.domElement);
+    frustumOrbit.enableDamping = true;
+    frustumOrbit.dampingFactor = 0.05;
+
+    // Add grid helper
+    const gridHelper = new THREE.GridHelper(20, 20);
+    frustumScene.add(gridHelper);
+
+    // Add axes helper
+    const axesHelper = new THREE.AxesHelper(5);
+    frustumScene.add(axesHelper);
+
+    // Create frustum wireframe
+    const frustumGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const frustumMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00ff00,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.5
+    });
+    const frustum = new THREE.Mesh(frustumGeometry, frustumMaterial);
+    frustumScene.add(frustum);
+
+    // Add camera helper
+    const cameraHelper = new THREE.CameraHelper(camera);
+    frustumScene.add(cameraHelper);
+
+    return { frustum, cameraHelper };
+}
+
+function updateFrustumVisualization(frustum, cameraHelper) {
+    // Update frustum position and size based on camera parameters
+    const fov = camera.fov * (Math.PI / 180);
+    const aspect = camera.aspect;
+    const near = camera.near;
+    const far = camera.far;
+
+    // Calculate frustum dimensions
+    const height = 2 * Math.tan(fov / 2) * near;
+    const width = height * aspect;
+
+    // Update frustum geometry
+    frustum.scale.set(width, height, near);
+    frustum.position.copy(camera.position);
+    frustum.quaternion.copy(camera.quaternion);
+
+    // Update camera helper
+    cameraHelper.update();
+}
+
+// Update the resize handler
+window.addEventListener('resize', function() {
+    const mainContainer = document.getElementById('canvas-main');
+    const frustumContainer = document.getElementById('canvas-frustum');
+    
+    if (mainContainer && renderer) {
+        const w = mainContainer.offsetWidth;
+        const h = mainContainer.offsetHeight;
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+    }
+    
+    if (frustumContainer && frustumCamera && frustumRenderer) {
+        const w = frustumContainer.offsetWidth;
+        const h = frustumContainer.offsetHeight;
+        frustumRenderer.setSize(w, h);
+        frustumCamera.aspect = w / h;
+        frustumCamera.updateProjectionMatrix();
+    }
+});
+
+// Call init after DOM is loaded
+document.addEventListener('DOMContentLoaded', init);

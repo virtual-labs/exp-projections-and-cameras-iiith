@@ -148,8 +148,8 @@
 
     </section>
 
-    <main class="columns is-centered is-variable is-1-mobile is-flex is-flex-wrap-wrap workspace">
-        <aside id="left" class="column is-2-desktop is-5-tablet is-5-mobile apparatus">
+    <main class="workspace">
+        <aside id="left" class="apparatus">
             <div class="v-datalist-container">
                 <div class="v-datalist-row">
                     <div class="v-datalist-title">Display Settings</div>
@@ -295,34 +295,36 @@
 
             </div>
         </aside>
-
-
-        <div class="column is-7-desktop is-10-tablet is-10-mobile exp">
-            <div class="v-canvas-container" id="canvas-main">
-
+        
+        <div class="column is-10-desktop">
+            <div class="columns is-multiline">
+                <div class="column is-6">
+                    <div class="view-container">
+                        <h3 class="view-title">View Frustum Visualization</h3>
+                        <div id="canvas-frustum" class="v-canvas-container"></div>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="view-container">
+                        <h3 class="view-title">Final Rendering</h3>
+                        <div id="canvas-main" class="v-canvas-container"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
 
-
-        <div id="observations" class="column has-text-centered is-2-desktop is-5-tablet is-5-mobile right">
+        <div id="observations" class="right">
             <div class="v-datalist-container">
-                <div class="v-datalist-title" style="padding-top: 20px;">Camera Controls</div>
+                <div class="v-datalist-title">Camera Controls</div>
                 <div id="gui-container"></div>
-
                 <div style="padding-top: 30px;">
                     <button class="v-button reset-btn is-responsive" onclick="location.reload()">
                         Reset All
                     </button>
                 </div>
             </div>
-
         </div>
-        <!-- <div id="observations" class="column has-text-centered is-2-desktop is-5-tablet is-5-mobile right">
-        </div> -->
-
     </main>
-
 
     <script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
     <script type="module" src="main.js"></script>
