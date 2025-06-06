@@ -1,0 +1,674 @@
+.page {
+    overflow: hidden;
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.workspace {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0;
+    height: calc(100vh - 100px);
+}
+
+/* Left sidebar styles */
+#left.apparatus {
+    flex: 0 0 300px;
+    height: 100%;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+}
+
+/* Main content area */
+.column.is-10-desktop {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* View containers layout */
+.columns.is-multiline {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.column.is-6 {
+    flex: 1 1 45%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.view-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.v-canvas-container {
+    flex: 1;
+    min-height: 300px;
+    background: #fff;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Right sidebar styles */
+#observations.right {
+    flex: 0 0 300px;
+    height: 100%;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+}
+
+/* Mobile responsive styles */
+@media screen and (max-width: 1023px) {
+    .workspace {
+        height: auto;
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    #left.apparatus,
+    #observations.right {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+
+    .column.is-10-desktop {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .columns.is-multiline {
+        margin: 0 !important;
+        width: 100% !important;
+    }
+
+    .column.is-6 {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 1rem;
+        padding: 0 !important;
+    }
+
+    .view-container {
+        min-height: 400px;
+        margin-bottom: 1rem;
+        width: 100% !important;
+        padding: 0.5rem;
+    }
+
+    .v-canvas-container {
+        min-height: 350px;
+        height: 400px;
+        width: 100% !important;
+    }
+}
+
+/* Additional mobile optimizations for very small screens */
+@media screen and (max-width: 480px) {
+    .v-canvas-container {
+        height: 300px;
+    }
+
+    .view-container {
+        min-height: 320px;
+        padding: 0.25rem;
+    }
+
+    .column.is-10-desktop {
+        padding: 0 !important;
+    }
+}
+
+/* Shape list container adjustments */
+.shape-list-container {
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+/* GUI container adjustments */
+#gui-container {
+    position: relative;
+    width: 95%;
+    padding-top: 30px;
+    padding-left: 15px;
+    height: auto;
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    overflow: hidden;
+    transform: scale(1.15);
+    border-radius: 20px;
+}
+
+/* Style for dat.GUI container */
+.dg.main {
+    width: 85% !important; /* Reduced from 100% to 85% */
+    margin: 0 auto !important;
+}
+
+/* Style for dat.GUI title bar */
+.dg.main .close-button {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 5px 0 !important;
+}
+
+/* Style for dat.GUI folder */
+.dg.main .folder {
+    width: 100% !important;
+    margin: 0 auto !important;
+}
+
+/* Style for dat.GUI controls */
+.dg.main .folder .dg {
+    width: 100% !important;
+    margin: 0 auto !important;
+}
+
+/* Style for individual controls */
+.dg.main .folder .dg .c {
+    width: 100% !important;
+    padding: 0 5px !important;
+}
+
+/* Style for control labels */
+.dg.main .folder .dg .c .slider {
+    width: 100% !important;
+}
+
+.dg.main .folder .dg .c input[type=text] {
+    width: 100% !important;
+}
+
+/* Add margin to the right side of the container */
+#observations.right .v-datalist-container {
+    padding-right: 15px; /* Match the left padding */
+}
+
+.smol-font {
+   font-size: x-medium; 
+}
+
+.v-datalist-container {
+    height: 85%;
+    padding: 0;
+}
+
+.v-instruction-container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.v-slider-full {
+    width: 80%;
+	margin: auto;
+}
+
+.input-form {
+    display: none;
+    color: black;
+}
+
+.add {
+    font-size: 0.90rem;
+}
+
+.left {
+    order: 1;
+}
+
+.exp {
+    order: 2;
+}
+
+.right {
+    order: 3;
+}
+
+/* .exp {
+    position: relative;
+} */
+
+/* Remove large negative margin */
+.slider-container {
+    position: relative;
+     display: flex; /*Flex layout for the container*/ 
+    margin-top: -11vh;
+}
+
+.centered-slider {
+    width: 100%; /* Ensure slider takes up full width */
+}
+
+.axis-change{
+    display: flex;
+    flex-direction: row;
+    padding-left: 25px;
+}
+
+@media screen and (max-width: 800px) {
+     .v-canvas-container {
+        width: 100%;
+        height: 650px; /* Set a minimum height for mobile */
+        /* min-height: 100px; */
+    }
+    .slider-container {
+        margin-top: -60px;
+    }
+    .axis-change{
+        display: flex;
+        flex-direction: column;
+    }
+    .left {
+        order: 1;
+        
+    }
+
+    .right {
+        order: 2;
+    }
+
+    .exp {
+        order: 3;
+    }
+}
+
+@media (min-width: 1024px) {
+  #left.apparatus {
+    width: 20vw;
+    height: 100vh; /* Adjusting height using viewport height */
+    overflow-y: auto; /* Scrollbar for overflow content */
+    /* Any additional styles can be added here */
+  }
+  #observations.right {
+    width: 20vw;
+    height: 100vh; /* Adjusting height using viewport height */
+  }
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.canvas-container {
+    width: 100%;
+    height: auto;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+#top-border {
+    border-top: 1px solid black;
+    margin: 0.5rem;
+}
+
+.smol-wid {
+    width: 20%;
+    /* margin: 0.1rem; */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* background-color: rgb(0, 0, 0); */
+    /* background-color: rgba(0, 0, 0, 0.4); */
+}
+
+#disp-heading { 
+    margin: 0.5rem;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#add-modal {
+    width: 50%;
+    margin: auto;
+}
+
+#edit-modal {
+    width: 50%;
+    margin: auto;
+}
+
+.v-datalist-title {
+    border-bottom: 0;
+    /* margin-top: 1px; */
+}
+
+.v-datalist-title-shapes {
+    /* font-family: 'Arial', sans-serif; */
+    font-weight: bold;
+    font-size: 22px; /* Larger font size */
+    color: #000000; /* Solid black */
+    margin-top: -10px; /* Space below */
+}
+
+.v-collapsible-instruction-container {
+    width: 65%;
+    margin: auto;
+    border-radius: 0.5rem;
+}
+
+.v-collapsible {
+    width: 98%;
+    margin: auto;
+}
+
+.v-collapsible::after {
+    size: 1rem;
+}
+
+.v-button {
+    background-color: #04AA6D;
+    border-radius: 0.5rem;
+    font-size: medium;
+    margin: 1rem;
+}
+
+.instr-font {
+    font-size: 1rem;
+    color: #000;
+}
+
+.coord-dim {
+    width: 100px;
+    margin: 0.25rem;
+}
+
+#add-shape-btn {
+    background-color: #3298dc;
+    border-radius: 0.5rem;
+}
+
+#edit-shape-btn {
+    background-color: #48c774;
+    border-radius: 0.5rem;
+}
+
+#delete-shape-btn {
+    background-color: #f14668;
+    border-radius: 0.5rem;
+}
+
+#move-button {
+    background-color: #48c774;
+    border-radius: 0.5rem;
+}
+
+#set-rotation-axis {
+    background-color: #3298dc;
+    border-radius: 0.5rem;
+}
+
+#checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#checkboxes label {
+    margin: 0.3rem auto;
+
+    display: flex;
+    align-items: flex-start;
+    flex: 40%;
+}
+
+#lock-v #xy-grid #xz-grid #yz-grid {
+    margin: auto 0.1rem;
+    padding: auto 0.1rem;
+}
+
+.fields {
+	width: 50%;
+}
+
+.field-div {
+    padding-top: 10px;
+	margin: 2px;
+}
+
+/* Style for the entire shape list *//* Container for the shape list */
+.shape-list-container {
+  font-family: 'Arial', sans-serif;
+  margin-top: 10px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: 50vh; /* Set a fixed height, adjust as needed */
+  overflow-x: auto; /* Allows horizontal scrolling if the list overflows */
+}
+
+/* Title for the shape list */
+.v-datalist-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.v-datalist-title-experiment{
+    font-size: 20px;
+  font-weight: bold;
+  margin-top: 100px;
+  text-align: center;
+  color: #2c3e50;
+}
+
+/* Style for the unordered list */
+.shape-list-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Style for each list item */
+.shape-list-container li {
+  background: #ffffff;
+  padding: 18px;
+  margin: 10px 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column; /* Makes sure the shape name and buttons stack properly */
+}
+
+/* Hover effect for each item */
+.shape-list-container li:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for shape id and coordinates */
+.shape-list-container li span {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Style for buttons container */
+.shape-list-container li .button-group {
+  display: flex;
+  justify-content: space-evenly; /* Arrange buttons horizontally */
+  gap: 10px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* Style for buttons */
+.shape-list-container button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+/* Hover effect for all buttons */
+.shape-list-container button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+/* Active effect when button is clicked */
+.shape-list-container button:active {
+  transform: translateY(2px);
+}
+
+/* Specific button styles */
+.shape-list-container button.select-btn {
+  background-color: #970473; 
+}
+
+.shape-list-container button.edit-btn {
+  background-color: #2aca67; 
+}
+
+.shape-list-container button.delete-btn {
+  background-color: #e74c3c; /* Red */
+}
+
+/* Hover effects for individual buttons */
+.shape-list-container button.select-btn:hover {
+  background-color: #3739b3;
+}
+
+.shape-list-container button.edit-btn:hover {
+  background-color: #06632d;
+}
+
+.shape-list-container button.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Style for shape name */
+.shape-list-container li .shape-name {
+  font-size: 30px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+/* Style for coordinates */
+.shape-list-container li .coordinates {
+  font-size: 15px;
+  font-weight: normal;
+  color: #683801;
+  margin-top: 5px;
+}
+
+#procedure-message {
+    display: none;
+    position: fixed;
+    max-width: 100vw; /* Full width */
+    max-height: 90vh; /* Prevent overflow */
+    overflow-y: auto; /* Scroll if content exceeds height */
+    background: linear-gradient(135deg, #f0f4f8, #d6e1e7); /* Gradient background */
+    z-index: 1000;
+    padding: 35px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow for more depth */
+    border-radius: 16px; /* Rounded corners for a smoother look */
+    text-align: left;
+    top: 48%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%);
+    animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+    border: 2px solid #3498db; /* Border with a light blue color */
+}
+
+/* Add a subtle fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Optional: add hover effect */
+#procedure-message:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+    transform: translate(-50%, -50%) scale(1.05); /* Slight zoom effect */
+}
+
+.view-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+    text-align: center;
+}
+
+#canvas-main, #canvas-frustum {
+    width: 100%;
+    height: 400px;
+    background: #fff;
+    border-radius: 4px;
+}
+
+
