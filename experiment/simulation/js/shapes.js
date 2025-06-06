@@ -81,6 +81,25 @@ import { createMaterials } from "./materials.js";
 //   // Implement deletion logic here, e.g., remove the shape from shapeList
 // }
 
+// Modify the addShapeToBothScenes function to handle cases where frustumScene might not be available
+function addShapeToBothScenes(shape, mainScene, frustumScene) {
+    if (!mainScene) {
+        console.error('Main scene is not defined');
+        return;
+    }
+    
+    mainScene.add(shape);
+    
+    if (frustumScene) {
+        const clonedShape = shape.clone();
+        // Copy the material to ensure proper rendering
+        if (shape.material) {
+            clonedShape.material = shape.material.clone();
+        }
+        frustumScene.add(clonedShape);
+    }
+}
+
 export const createCube = function (
   x,
   y,
@@ -88,7 +107,8 @@ export const createCube = function (
   shapes,
   shapeList,
   shapeCount,
-  scene,
+  mainScene,
+  frustumScene,
   point,
   shapeVertex,
   dragX,
@@ -108,7 +128,7 @@ export const createCube = function (
   // cub.geometry.verticesNeedUpdate = true;
   shapes.push(cub);
   shapes[shapes.length - 1].position.set(x, y, z);
-  scene.add(shapes[shapes.length - 1]);
+  addShapeToBothScenes(shapes[shapes.length - 1], mainScene, frustumScene);
   shapes[shapes.length - 1].name = "Cube";
 
   // Add to shapeList with cubeCounter
@@ -164,7 +184,8 @@ export const createDodecahedron = function (
   shapes,
   shapeList,
   shapeCount,
-  scene,
+  mainScene,
+  frustumScene,
   point,
   shapeVertex,
   dragX,
@@ -172,13 +193,18 @@ export const createDodecahedron = function (
   dragZ
 ) {
   const geometry = new THREE.DodecahedronGeometry(1);
-  const material = createMaterials().cubeShader;
-  const cub = new THREE.Mesh(geometry, material);
-  cub.geometry.verticesNeedUpdate = true;
-  // cub.name = "Dodecahedron";
-  shapes.push(cub);
+  const material = createMaterials().dodecahedronShader;
+  const dodeca = new THREE.Mesh(geometry, material);
+
+  dodeca.position.x = x;
+  dodeca.position.y = y;
+  dodeca.position.z = z;
+  
+  shapes.push(dodeca);
   shapes[shapes.length - 1].position.set(x, y, z);
+  addShapeToBothScenes(shapes[shapes.length - 1], mainScene, frustumScene);
   shapes[shapes.length - 1].name = "Dodecahedron";
+
   const edgesGeometry = new THREE.EdgesGeometry(geometry);
   const edgesMaterial = new THREE.LineBasicMaterial({
     color: 0xffffff,
@@ -194,7 +220,6 @@ export const createDodecahedron = function (
   });
   const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
   shapes[shapes.length - 1].add(edges);
-  scene.add(shapes[shapes.length - 1]);
   for (let i = 0; i < shapes[shapes.length - 1].geometry.vertices.length; i++) {
     const dotGeometry = new THREE.Geometry();
     dotGeometry.vertices.push(shapes[shapes.length - 1].geometry.vertices[i]);
@@ -223,7 +248,8 @@ export const createOctahedron = function (
   shapes,
   shapeList,
   shapeCount,
-  scene,
+  mainScene,
+  frustumScene,
   point,
   shapeVertex,
   dragX,
@@ -231,13 +257,24 @@ export const createOctahedron = function (
   dragZ
 ) {
   const geometry = new THREE.OctahedronGeometry(1);
-  const material = createMaterials().cubeShader;
-  const cub = new THREE.Mesh(geometry, material);
-  cub.geometry.verticesNeedUpdate = true;
-  shapes.push(cub);
-  shapes[shapes.length - 1].position.set(x, y, z);
+  const material = createMaterials().octahedronShader;
+  const octa = new THREE.Mesh(geometry, material);
 
-  // Add to shapeList with octahedronCounter
+  octa.position.x = x;
+  octa.position.y = y;
+  octa.position.z = z;
+  
+  shapes.push(octa);
+  shapes[shapes.length - 1].position.set(x, y, z);
+  addShapeToBothScenes(shapes[shapes.length - 1], mainScene, frustumScene);
+  shapes[shapes.length - 1].name = "Octahedron";
+
+  const edgesGeometry = new THREE.EdgesGeometry(geometry);
+  const edgesMaterial = new THREE.LineBasicMaterial({
+    color: 0xffffff,
+    linewidth: 2,
+  });
+
   shapeList.push({
     id: `Octahedron-${shapeCount[2]++}`,
     // name: "Octahedron",
@@ -245,15 +282,8 @@ export const createOctahedron = function (
     y: parseInt(y, 10), // Convert to integer
     z: parseInt(z, 10), // Convert to integer
   });
-  const edgesGeometry = new THREE.EdgesGeometry(geometry);
-  const edgesMaterial = new THREE.LineBasicMaterial({
-    color: 0xffffff,
-    linewidth: 2,
-  });
   const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
   shapes[shapes.length - 1].add(edges);
-  scene.add(shapes[shapes.length - 1]);
-  shapes[shapes.length - 1].name = "Octahedron";
   for (let i = 0; i < shapes[shapes.length - 1].geometry.vertices.length; i++) {
     const dotGeometry = new THREE.Geometry();
     dotGeometry.vertices.push(shapes[shapes.length - 1].geometry.vertices[i]);
@@ -282,21 +312,26 @@ export const createTetrahedron = function (
   shapes,
   shapeList,
   shapeCount,
-  scene,
+  mainScene,
+  frustumScene,
   point,
   shapeVertex,
   dragX,
   dragY,
   dragZ
 ) {
-  console.log("Creating Tetrahedron at: ", x, y, z); // Add this line to debug
-
   const geometry = new THREE.TetrahedronGeometry(1);
-  const material = createMaterials().cubeShader;
-  const cub = new THREE.Mesh(geometry, material);
-  cub.geometry.verticesNeedUpdate = true;
-  shapes.push(cub);
+  const material = createMaterials().tetrahedronShader;
+  const tetra = new THREE.Mesh(geometry, material);
+
+  tetra.position.x = x;
+  tetra.position.y = y;
+  tetra.position.z = z;
+  
+  shapes.push(tetra);
   shapes[shapes.length - 1].position.set(x, y, z);
+  addShapeToBothScenes(shapes[shapes.length - 1], mainScene, frustumScene);
+  shapes[shapes.length - 1].name = "Tetrahedron";
 
   shapeList.push({
     id: `Tetrahedron-${shapeCount[3]++}`,
@@ -312,8 +347,6 @@ export const createTetrahedron = function (
   });
   const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
   shapes[shapes.length - 1].add(edges);
-  scene.add(shapes[shapes.length - 1]);
-  shapes[shapes.length - 1].name = "Tetrahedron";
   for (let i = 0; i < shapes[shapes.length - 1].geometry.vertices.length; i++) {
     const dotGeometry = new THREE.Geometry();
     dotGeometry.vertices.push(shapes[shapes.length - 1].geometry.vertices[i]);

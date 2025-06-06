@@ -2,6 +2,20 @@
 
 3D projection refers to methods that map three-dimensional points onto a two-dimensional plane, like a screen. There are two main types of projections: Orthographic and Perspective.
 
+### Camera Matrices in Computer Graphics
+
+In computer graphics, several matrices work together to transform 3D objects into 2D images:
+
+1. **Model Matrix**: Transforms objects from model space to world space
+2. **View Matrix**: Defines the camera's position and orientation in world space
+3. **Projection Matrix**: Projects 3D coordinates onto a 2D plane
+
+The view matrix is particularly important as it:
+- Positions the camera in the scene
+- Determines the camera's orientation
+- Creates the viewing direction
+- Establishes the up vector for the camera
+
 ### Orthographic Projection
 
 Orthographic projection is a type of parallel projection where all projection lines are perpendicular (orthogonal) to the projection plane. This results in every plane of the scene appearing without any perspective distortion on the viewing surface.
@@ -12,7 +26,6 @@ Orthographic projection is a type of parallel projection where all projection li
   - **Bottom, Top:** Define the vertical boundaries of the viewing frustum. The bottom and top planes determine the height of the frustum.
   - **Near, Far:** Define the depth range or distance from the camera within which objects are rendered. The near plane is the closest distance from the camera where objects start to appear, and the far plane is the furthest distance where objects are still visible.
 
-
 In matrix form, the orthographic projection matrix adjusts the current transformation matrix \( M \) with the following matrix:
 
 <img src="images/ortho.png">  
@@ -22,7 +35,15 @@ In matrix form, the orthographic projection matrix adjusts the current transform
 Perspective projection mimics how the human eye perceives depth. Distant objects appear smaller, creating a sense of depth and realism.
 
 - **Perspective Camera:** A camera that uses perspective projection.
-- **Field of View (FOV):** Determines how wide the view angle is.
+- **Field of View (FOV):** 
+  - Determines how wide the view angle is
+  - Controls the extent of the scene visible to the camera
+  - Affects the perspective distortion (wider FOV = more distortion)
+  - Measured in degrees, typically between 45° and 120°
+- **Aspect Ratio:**
+  - Defines the proportion of width to height in the rendered image
+  - Ensures proper scaling and visual representation
+  - Typically matches the display device's aspect ratio
 - **Near Plane:** The closest distance from the camera where objects start to be rendered.
 - **Far Plane:** The furthest distance where objects are still rendered.
 
@@ -31,6 +52,22 @@ The perspective projection requires greater definition. The camera's position, o
 <img src="images/perspective.png">
 <br>
 <br>
+
+### Depth Buffer and Clipping
+
+The depth buffer (also called z-buffer) is crucial for realistic 3D rendering:
+
+1. **Depth Buffer:**
+   - Stores the depth value of each pixel
+   - Helps determine which objects are visible and which are hidden
+   - Enables proper rendering of overlapping objects
+   - Simulates atmospheric perspective by assigning depth values
+
+2. **Clipping:**
+   - Removes objects outside the viewable region
+   - Optimizes rendering efficiency
+   - Prevents rendering of invisible objects
+   - Uses the near and far planes to determine visibility
 
 **Below are two images that clearly show the differences between them-**
 

@@ -167,42 +167,55 @@ function updateMouseButtons() {
   orbit.update();
 }
 
+// Update grid checkbox event listeners
 xyGrid.addEventListener("click", () => {
-  if (xyGrid.checked) {
-    let grid = new THREE.GridHelper(size, divisions);
-    let vector3 = new THREE.Vector3(0, 1, 0);
-    grid.lookAt(vector3);
-    xygrid.push(grid);
-    scene.add(xygrid[0]);
-  } else {
-    scene.remove(xygrid[0]);
-    xygrid.pop();
-  }
+    if (xyGrid.checked) {
+        let grid = new THREE.GridHelper(size, divisions);
+        let vector3 = new THREE.Vector3(0, 1, 0);
+        grid.lookAt(vector3);
+        xygrid.push(grid);
+        scene.add(xygrid[0]);
+    } else {
+        if (xygrid.length > 0) {
+            scene.remove(xygrid[0]);
+            xygrid.pop();
+        }
+    }
 });
+
 xzGrid.addEventListener("click", () => {
-  if (xzGrid.checked) {
-    let grid = new THREE.GridHelper(size, divisions);
-    let vector3 = new THREE.Vector3(0, 0, 1);
-    grid.lookAt(vector3);
-    xzgrid.push(grid);
-    scene.add(xzgrid[0]);
-  } else {
-    scene.remove(xzgrid[0]);
-    xzgrid.pop();
-  }
+    if (xzGrid.checked) {
+        let grid = new THREE.GridHelper(size, divisions);
+        let vector3 = new THREE.Vector3(0, 0, 1);
+        grid.lookAt(vector3);
+        xzgrid.push(grid);
+        scene.add(xzgrid[0]);
+    } else {
+        if (xzgrid.length > 0) {
+            scene.remove(xzgrid[0]);
+            xzgrid.pop();
+        }
+    }
 });
+
 yzGrid.addEventListener("click", () => {
-  if (yzGrid.checked) {
-    let grid = new THREE.GridHelper(size, divisions);
-    grid.geometry.rotateZ(PI / 2);
-    // grid.lookAt(vector3);
-    yzgrid.push(grid);
-    scene.add(yzgrid[0]);
-  } else {
-    scene.remove(yzgrid[0]);
-    yzgrid.pop();
-  }
+    if (yzGrid.checked) {
+        let grid = new THREE.GridHelper(size, divisions);
+        grid.geometry.rotateZ(PI / 2);
+        yzgrid.push(grid);
+        scene.add(yzgrid[0]);
+    } else {
+        if (yzgrid.length > 0) {
+            scene.remove(yzgrid[0]);
+            yzgrid.pop();
+        }
+    }
 });
+
+// Ensure checkboxes start unchecked
+xyGrid.checked = false;
+xzGrid.checked = false;
+yzGrid.checked = false;
 
 function updateShapeList(shapeList) {
   const shapeListDiv = document.getElementById("shape-list");
@@ -426,6 +439,7 @@ function handleEdit(shape, line, coordsArray) {
         shapeList,
         shapeCount,
         scene,
+        frustumScene,
         point,
         shapeVertex,
         dragX,
@@ -481,6 +495,7 @@ function handleShapeAddition() {
       shapeList,
       shapeCount,
       scene,
+      frustumScene,
       point,
       shapeVertex,
       dragX,
@@ -496,6 +511,7 @@ function handleShapeAddition() {
       shapeList,
       shapeCount,
       scene,
+      frustumScene,
       point,
       shapeVertex,
       dragX,
@@ -511,6 +527,7 @@ function handleShapeAddition() {
       shapeList,
       shapeCount,
       scene,
+      frustumScene,
       point,
       shapeVertex,
       dragX,
@@ -526,6 +543,7 @@ function handleShapeAddition() {
       shapeList,
       shapeCount,
       scene,
+      frustumScene,
       point,
       shapeVertex,
       dragX,
@@ -533,7 +551,7 @@ function handleShapeAddition() {
       dragz
     );
   }
-  updateShapeList(shapeList); // Update the UI
+  updateShapeList(shapeList);
   addModal.style.display = "none";
 }
 
@@ -820,9 +838,9 @@ let init = function () {
     light.position.set(1, 1, 1).normalize();
     scene.add(light);
 
-    // Add grid helper
+    // Add grid helper but don't add it to scene by default
     const gridHelper = new THREE.GridHelper(size, divisions);
-    scene.add(gridHelper);
+    // scene.add(gridHelper); // Commented out to keep grid hidden by default
 
     // Add axis helpers
     const dir = [
@@ -846,14 +864,15 @@ let init = function () {
         if (label) scene.add(label);
     }
 
-    // Create initial shapes
-    createCube(7, 0, 0, shapes, shapeList, shapeCount, scene, point, shapeVertex, dragX, dragY, dragz);
-    createCube(0, -5, 0, shapes, shapeList, shapeCount, scene, point, shapeVertex, dragX, dragY, dragz);
-    createCube(0, 0, 7, shapes, shapeList, shapeCount, scene, point, shapeVertex, dragX, dragY, dragz);
-    updateShapeList(shapeList);
+    // Initialize frustum visualization before creating shapes
+    const { frustum, cameraHelper, frustumScene } = createFrustumVisualization();
 
-    // Initialize frustum visualization after main scene is set up
-    const { frustum, cameraHelper } = createFrustumVisualization();
+    // Create one of each shape type
+    createCube(7, 0, 0, shapes, shapeList, shapeCount, scene, frustumScene, point, shapeVertex, dragX, dragY, dragz);
+    createTetrahedron(0, -5, 0, shapes, shapeList, shapeCount, scene, frustumScene, point, shapeVertex, dragX, dragY, dragz);
+    createOctahedron(0, 0, 7, shapes, shapeList, shapeCount, scene, frustumScene, point, shapeVertex, dragX, dragY, dragz);
+    createDodecahedron(-7, 0, 0, shapes, shapeList, shapeCount, scene, frustumScene, point, shapeVertex, dragX, dragY, dragz);
+    updateShapeList(shapeList);
 
     // Main animation loop
     function animate() {
@@ -863,7 +882,7 @@ let init = function () {
         orbit.update();
         renderer.render(scene, camera);
 
-        // Update frustum visualization if it exists
+        // Update frustum visualization
         if (frustum && cameraHelper) {
             updateFrustumVisualization(frustum, cameraHelper);
             frustumOrbit.update();
@@ -918,7 +937,13 @@ function createFrustumVisualization() {
     const cameraHelper = new THREE.CameraHelper(camera);
     frustumScene.add(cameraHelper);
 
-    return { frustum, cameraHelper };
+    // Add lighting to frustum scene
+    const light = new THREE.DirectionalLight(0xffffff, 3);
+    light.position.set(1, 1, 1).normalize();
+    frustumScene.add(light);
+
+    // Return both the frustum and cameraHelper
+    return { frustum, cameraHelper, frustumScene };
 }
 
 function updateFrustumVisualization(frustum, cameraHelper) {
@@ -965,3 +990,25 @@ window.addEventListener('resize', function() {
 
 // Call init after DOM is loaded
 document.addEventListener('DOMContentLoaded', init);
+
+// Modify shape creation functions to add shapes to both scenes
+function addShapeToBothScenes(shape) {
+    scene.add(shape);
+    frustumScene.add(shape.clone()); // Clone the shape for the frustum scene
+}
+
+// Update the animation loop to render both scenes
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Update main scene
+    orbit.update();
+    renderer.render(scene, camera);
+
+    // Update frustum visualization
+    if (frustum && cameraHelper) {
+        updateFrustumVisualization(frustum, cameraHelper);
+        frustumOrbit.update();
+        frustumRenderer.render(frustumScene, frustumCamera);
+    }
+}
