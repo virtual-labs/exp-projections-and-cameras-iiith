@@ -26,12 +26,12 @@
             "difficulty": "intermediate"
         },
         {
-                "question": "3. What is the purpose of the view matrix in computer graphics?",
-                "answers": {
-                    "a": "To define the position and orientation of the virtual camera.",
-                    "b": "To transform object coordinates from model space to world space.",
-                    "c": "To apply shading algorithms to the rendered image.",
-                    "d": "To store pixel values of an image."
+            "question": "3. What is the purpose of the view matrix in computer graphics?",
+            "answers": {
+                "a": "To define the position and orientation of the virtual camera.",
+                "b": "To transform object coordinates from model space to world space.",
+                "c": "To apply shading algorithms to the rendered image.",
+                "d": "To store pixel values of an image."
             },
             "correctAnswer": "a",
             "explanation": "The view matrix is used to define the position and orientation of the virtual camera, allowing for proper visualization of the 3D scene.",
