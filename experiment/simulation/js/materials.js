@@ -22,12 +22,42 @@ function fragmentShader() {
                     }`;
 }
 
-
 export function createMaterials() {
+    // Cube: Red to Blue gradient
     const cubeShader = new THREE.ShaderMaterial({
         uniforms: {
-            colorA: { type: "vec3", value: new THREE.Color(0xff0000) },
-            colorB: { type: "vec3", value: new THREE.Color(0x0000ff) },
+            colorA: { type: "vec3", value: new THREE.Color(0xff0000) }, // Red
+            colorB: { type: "vec3", value: new THREE.Color(0x0000ff) }, // Blue
+        },
+        vertexShader: vertexShader(),
+        fragmentShader: fragmentShader(),
+    });
+
+    // Tetrahedron: Green to Yellow gradient
+    const tetrahedronShader = new THREE.ShaderMaterial({
+        uniforms: {
+            colorA: { type: "vec3", value: new THREE.Color(0x00ff00) }, // Green
+            colorB: { type: "vec3", value: new THREE.Color(0xffff00) }, // Yellow
+        },
+        vertexShader: vertexShader(),
+        fragmentShader: fragmentShader(),
+    });
+
+    // Octahedron: Purple to Pink gradient
+    const octahedronShader = new THREE.ShaderMaterial({
+        uniforms: {
+            colorA: { type: "vec3", value: new THREE.Color(0x800080) }, // Purple
+            colorB: { type: "vec3", value: new THREE.Color(0xff69b4) }, // Pink
+        },
+        vertexShader: vertexShader(),
+        fragmentShader: fragmentShader(),
+    });
+
+    // Dodecahedron: Orange to Cyan gradient
+    const dodecahedronShader = new THREE.ShaderMaterial({
+        uniforms: {
+            colorA: { type: "vec3", value: new THREE.Color(0xffa500) }, // Orange
+            colorB: { type: "vec3", value: new THREE.Color(0x00ffff) }, // Cyan
         },
         vertexShader: vertexShader(),
         fragmentShader: fragmentShader(),
@@ -35,5 +65,8 @@ export function createMaterials() {
 
     return {
         cubeShader,
+        tetrahedronShader,
+        octahedronShader,
+        dodecahedronShader
     };
 }
